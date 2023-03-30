@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.coupon.domain.Coupon;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -13,17 +14,19 @@ public class ResponseDto {
     private String code;
     private String name;
     private int discount;
-    private LocalDate createDate;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
     private LocalDate useDate;
     private LocalDate endDate;
     private boolean usageStatus;
 
-    public ResponseDto(final Long id, final String code, String name, int discount, LocalDate createDate, LocalDate useDate, LocalDate endDate, boolean usageStatus) {
+    public ResponseDto(Long id,String code, String name, int discount, LocalDateTime createDate, LocalDateTime updateDate, LocalDate useDate, LocalDate endDate, boolean usageStatus) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.discount = discount;
         this.createDate = createDate;
+        this.updateDate = updateDate;
         this.useDate = useDate;
         this.endDate = endDate;
         this.usageStatus = usageStatus;
@@ -37,6 +40,7 @@ public class ResponseDto {
                 coupon.getName(),
                 coupon.getDiscount(),
                 coupon.getCreateDate(),
+                coupon.getUpdateDate(),
                 coupon.getUseDate(),
                 coupon.getEndDate(),
                 coupon.isUsageStatus()
