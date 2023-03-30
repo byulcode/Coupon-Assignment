@@ -23,7 +23,9 @@ public class CouponService {
      */
     @Transactional
     public Coupon saveCoupon(RequestDto couponDto) {
-        return couponRepository.save(couponDto.toEntity());
+        Coupon coupon =  couponRepository.save(couponDto.toEntity());
+        coupon.checkUsageStatus();
+        return coupon;
     }
 
     /**

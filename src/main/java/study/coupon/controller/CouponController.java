@@ -32,13 +32,14 @@ public class CouponController {
     @PatchMapping("/update/{id}")
     public ResponseDto updateCoupon(@PathVariable Long id, @RequestBody RequestDto requestDto) {
         Coupon coupon = couponService.updateCoupon(id, requestDto);
+        coupon.checkUsageStatus();
         return ResponseDto.from(coupon);
     }
 
     /**
      * 특정 아이디의 쿠폰 조회
      */
-    @GetMapping("/coupon/{id}")
+    @GetMapping("/{id}")
     public ResponseDto getCoupon(@PathVariable Long id) {
         Coupon coupon = couponService.getCoupon(id);
         return ResponseDto.from(coupon);
