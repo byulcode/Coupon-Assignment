@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.coupon.domain.Coupon;
 import study.coupon.domain.dto.RequestDto;
+import study.coupon.domain.exception.InvalidCouponException;
 import study.coupon.repository.CouponRepository;
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class CouponService {
      * 쿠폰 조회
      */
     public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id).orElseThrow();
+        return couponRepository.findById(id)
+                .orElseThrow(InvalidCouponException::new);
     }
 
     /**
@@ -44,7 +46,8 @@ public class CouponService {
      */
     @Transactional
     public Coupon updateCoupon(Long id, RequestDto requestDto) {
-        Coupon coupon = couponRepository.findById(id).orElseThrow();
+        Coupon coupon = couponRepository
+                .findById(id).orElseThrow(InvalidCouponException::new);
         coupon.update(requestDto.getCode(), requestDto.getUseDate(), requestDto.getEndDate(), requestDto.isUsageStatus());
         return coupon;
     }
