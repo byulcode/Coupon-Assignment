@@ -4,9 +4,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.coupon.domain.Coupon;
 import study.coupon.domain.dto.RequestDto;
+import study.coupon.domain.dto.ResponseDto;
 import study.coupon.domain.exception.InvalidCouponException;
 import study.coupon.repository.CouponRepository;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,36 +25,39 @@ public class CouponService {
      * 쿠폰 등록
      */
     @Transactional
-    public Coupon saveCoupon(RequestDto couponDto) {
-        Coupon coupon =  couponRepository.save(couponDto.toEntity());
+    public ResponseDto saveCoupon(RequestDto requestDto) {
+        Coupon coupon =  couponRepository.save(requestDto.toEntity());
         coupon.checkUsageStatus();
-        return coupon;
+        return ResponseDto.from(coupon);
     }
 
     /**
      * 쿠폰 조회
      */
-    public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id)
+    public ResponseDto getCoupon(Long id) {
+        Coupon coupon = couponRepository.findById(id)
                 .orElseThrow(InvalidCouponException::new);
+        return ResponseDto.from(coupon);
     }
 
     /**
      * 전체 쿠폰 조회
      */
-    public List<Coupon> allCoupons() {
-        return couponRepository.findAll();
+    public List<ResponseDto> allCoupons() {
+        List<Coupon> list = couponRepository.findAll();
+        return list.stream().map(ResponseDto::from).collect(Collectors.toList());
     }
 
     /**
      * 쿠폰 수정
      */
     @Transactional
-    public Coupon updateCoupon(Long id, RequestDto requestDto) {
+    public ResponseDto updateCoupon(Long id, RequestDto requestDto) {
         Coupon coupon = couponRepository
                 .findById(id).orElseThrow(InvalidCouponException::new);
         coupon.update(requestDto.getCode(), requestDto.getUseDate(), requestDto.getEndDate(), requestDto.isUsageStatus());
-        return coupon;
+        coupon.checkUsageStatus();
+        return ResponseDto.from(coupon);
     }
 
     /**

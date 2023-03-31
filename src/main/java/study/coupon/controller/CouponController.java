@@ -1,13 +1,11 @@
 package study.coupon.controller;
 
 import org.springframework.web.bind.annotation.*;
-import study.coupon.domain.Coupon;
 import study.coupon.domain.dto.RequestDto;
 import study.coupon.domain.dto.ResponseDto;
 import study.coupon.service.CouponService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/coupon")
@@ -21,9 +19,8 @@ public class CouponController {
      * 쿠폰 등록
      */
     @PostMapping("/create")
-    public ResponseDto createCoupon(@RequestBody RequestDto couponDto) {
-        Coupon coupon = couponService.saveCoupon(couponDto);
-        return ResponseDto.from(coupon);
+    public ResponseDto createCoupon(@RequestBody RequestDto requestDto) {
+        return couponService.saveCoupon(requestDto);
     }
 
     /**
@@ -31,9 +28,7 @@ public class CouponController {
      */
     @PatchMapping("/update/{id}")
     public ResponseDto updateCoupon(@PathVariable Long id, @RequestBody RequestDto requestDto) {
-        Coupon coupon = couponService.updateCoupon(id, requestDto);
-        coupon.checkUsageStatus();
-        return ResponseDto.from(coupon);
+        return couponService.updateCoupon(id, requestDto);
     }
 
     /**
@@ -41,8 +36,7 @@ public class CouponController {
      */
     @GetMapping("/{id}")
     public ResponseDto getCoupon(@PathVariable Long id) {
-        Coupon coupon = couponService.getCoupon(id);
-        return ResponseDto.from(coupon);
+        return couponService.getCoupon(id);
     }
 
     /**
@@ -50,8 +44,7 @@ public class CouponController {
      */
     @GetMapping("/allCoupons")
     public List<ResponseDto> allCoupons() {
-        List<Coupon> list = couponService.allCoupons();
-        return list.stream().map(ResponseDto::from).collect(Collectors.toList());
+        return couponService.allCoupons();
     }
 
     /**
