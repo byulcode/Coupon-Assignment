@@ -68,4 +68,14 @@ public class CouponService {
         couponRepository.deleteById(id);
     }
 
+    /**
+     * 쿠폰코드에 한글이 포함된 쿠폰만 조회
+     */
+    public List<ResponseDto> findCouponTypeKor(String codeType) {
+        if (codeType.equals("kor")) {
+            List<Coupon> list = couponRepository.findCouponsByCodeContaining();
+            return list.stream().map(ResponseDto::from).collect(Collectors.toList());
+        }
+        return null;
+    }
 }

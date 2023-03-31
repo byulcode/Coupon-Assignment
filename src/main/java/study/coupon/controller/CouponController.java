@@ -41,9 +41,13 @@ public class CouponController {
 
     /**
      * 모든 쿠폰 조회
+     * codeType=kor 전달시 쿠폰코드에 한글이 포함된 쿠폰만 조회
      */
-    @GetMapping("/allCoupons")
-    public List<ResponseDto> allCoupons() {
+    @GetMapping("/list")
+    public List<ResponseDto> allCoupons(@RequestParam(value = "codeType", required = false, defaultValue = "") String codeType) {
+        if (codeType.equals("kor")) {
+            return couponService.findCouponTypeKor(codeType);
+        }
         return couponService.allCoupons();
     }
 
@@ -54,4 +58,5 @@ public class CouponController {
     public void deleteCoupon(@PathVariable Long id) {
         couponService.deleteCoupon(id);
     }
+
 }
