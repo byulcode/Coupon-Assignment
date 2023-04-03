@@ -14,7 +14,7 @@ public class RequestDto {
     private String name;
     private int discount;
     private LocalDateTime useDate;
-    private LocalDateTime endDate;
+      private LocalDateTime endDate;
     private boolean usageStatus;
 
     public RequestDto(String code, String name, int discount, LocalDateTime useDate, LocalDateTime endDate, boolean usageStatus) {
@@ -28,15 +28,14 @@ public class RequestDto {
 
     //dto -> entity
     public Coupon toEntity() {
-        return new Coupon(
-                null,
-                this.code,
-                this.name,
-                this.discount,
-                this.useDate,
-                this.endDate,
-                this.isUsageStatus()
-        );
+        return Coupon.builder()
+                .code(code)
+                .name(name)
+                .discount(discount)
+                .useDate(useDate)
+                .endDate(endDate)
+                .usageStatus(usageStatus)
+                .build();
     }
 
 }

@@ -1,5 +1,6 @@
 package study.coupon.domain.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.coupon.domain.Coupon;
@@ -7,10 +8,10 @@ import study.coupon.domain.Coupon;
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
 @NoArgsConstructor
 public class ResponseDto {
 
-    private Long id;
     private String code;
     private String name;
     private int discount;
@@ -20,8 +21,7 @@ public class ResponseDto {
     private LocalDateTime endDate;
     private boolean usageStatus;
 
-    public ResponseDto(Long id,String code, String name, int discount, LocalDateTime createDate, LocalDateTime updateDate, LocalDateTime useDate, LocalDateTime endDate, boolean usageStatus) {
-        this.id = id;
+    public ResponseDto(String code, String name, int discount, LocalDateTime createDate, LocalDateTime updateDate, LocalDateTime useDate, LocalDateTime endDate, boolean usageStatus) {
         this.code = code;
         this.name = name;
         this.discount = discount;
@@ -34,17 +34,16 @@ public class ResponseDto {
 
     // entity -> dto (정적 팩토리 메서드)
     public static ResponseDto from(Coupon coupon) {
-        return new ResponseDto(
-                coupon.getId(),
-                coupon.getCode(),
-                coupon.getName(),
-                coupon.getDiscount(),
-                coupon.getCreatedAt(),
-                coupon.getModifiedAt(),
-                coupon.getUseDate(),
-                coupon.getEndDate(),
-                coupon.isUsageStatus()
-        );
+        return ResponseDto.builder()
+                .code(coupon.getCode())
+                .name(coupon.getName())
+                .discount(coupon.getDiscount())
+                .createdAt(coupon.getCreatedAt())
+                .modifiedAt(coupon.getModifiedAt())
+                .useDate(coupon.getUseDate())
+                .endDate(coupon.getEndDate())
+                .usageStatus(coupon.isUsageStatus())
+                .build();
     }
 
 }

@@ -1,6 +1,7 @@
 package study.coupon.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "coupon")
 public class Coupon extends BaseTimeEntity {
