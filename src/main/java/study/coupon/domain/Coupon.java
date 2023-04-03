@@ -1,9 +1,6 @@
 package study.coupon.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "coupon")
 public class Coupon extends BaseTimeEntity {
 
@@ -24,16 +22,6 @@ public class Coupon extends BaseTimeEntity {
     private LocalDateTime useDate;  //사용 날짜
     private LocalDateTime endDate; //만료 날짜
     private boolean usageStatus;    //사용 현황
-
-    public Coupon(Long id, String code, String name, int discount, LocalDateTime useDate, LocalDateTime endDate, boolean usageStatus) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.discount = discount;
-        this.useDate = useDate;
-        this.endDate = endDate;
-        this.usageStatus = usageStatus;
-    }
 
     public void update(String code, LocalDateTime useDate, LocalDateTime endDate, boolean usageStatus) {
         this.code = code;
