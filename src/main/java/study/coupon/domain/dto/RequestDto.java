@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import study.coupon.domain.Coupon;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -13,11 +13,11 @@ public class RequestDto {
     private String code;
     private String name;
     private int discount;
-    private LocalDate useDate;
-    private LocalDate endDate;
+    private LocalDateTime useDate;
+    private LocalDateTime endDate;
     private boolean usageStatus;
 
-    public RequestDto(String code, String name, int discount, LocalDate useDate, LocalDate endDate, boolean usageStatus) {
+    public RequestDto(String code, String name, int discount, LocalDateTime useDate, LocalDateTime endDate, boolean usageStatus) {
         this.code = code;
         this.name = name;
         this.discount = discount;
