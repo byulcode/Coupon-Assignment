@@ -1,6 +1,15 @@
 # Coupon-Assignment
 사이드프로젝트 스터디 4주차 과제 - JPA와 스프링부트로 coupon crud 구현하기
-### 새로 알게된 부분
+
+### Tech Stack
+- Spring Boot 2.7.10
+- Java 11
+- Spring Data JPA
+
+<details>
+<summary>새로 알게된 부분</summary>
+<div markdown="1">
+
 #### 1. JPA Auditing
 Spring Data JPA에서 시간에 대해서 자동으로 값을 넣어 주는 기능. aduit을 자동으로 생성 시간, 업데이트 시간을 매핑하여 데이터베이스 테이블에 넣을 수 있다.</br>
 사용 방법 : </br>
@@ -54,4 +63,37 @@ public class Person {
 + https://velog.io/@backfox/setter-%EC%93%B0%EC%A7%80-%EB%A7%90%EB%9D%BC%EA%B3%A0%EB%A7%8C-%ED%95%98%EA%B3%A0-%EA%B0%80%EB%B2%84%EB%A6%AC%EB%A9%B4-%EC%96%B4%EB%96%A1%ED%95%B4%EC%9A%94
 + https://velog.io/@cjh8746/%EC%A0%95%EC%A0%81-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9CStatic-Factory-Method
 
+</div>
+</details>
 
+<details>
+<summary>리팩토링</summary>
+<div markdown="1">
+
+### domain
+
+- `@DynamicUpdate` : 실제 값이 변경된 컬럼으로만 update 쿼리를 만드는 어노테이션
+- datetime vs timestamp
+  - datetime : YYYY-MM-DD hh:mm:ss 형식. timezone 적용 안됨.
+  - timestamp : YYYY-MM-DD hh:mm:ss 형식. timzone 적용됨. 기본적으로 not null
+- *`NoArgsConstructor(AccessLevel.PROTECTED)` : 무분별한 객체 생성을 체크할 수 있는 수단. 기본 생성자의 생성을 방지하고 지정한 생성자를 사용하도록 강제하여 완전한 상태의 객체를 생성하도록 도움을 줌.*
+- [Builder Pattern을 사용해야 하는 이유](https://mangkyu.tistory.com/163)
+  - 필요한 데이터만 설정할 수 있음
+  - 인자의 순서와 상관 없이 객체를 생성할 수 있어 유연성을 확보할 수 있음
+  - 적절한 책임을 이름에 부여하여 가독성을 높일 수 있음
+  - 변경 가능성을 최소화할 수 있음
+
+  ⇒ 객체를 생성할 때 builder 패턴을 사용하자
+
+
+### Controller
+
+- `@RequiredArgsConstructor` : final 혹은 @NutNull이 붙은 필드의 생성자를 자동으로 만들어 준다. 하지만 자동적으로 생성자가 만들어지기 때문에 사용에 유의!
+- `ResponseEntity` : HttpEntity 클래스를 상속받으며 HTTP 상태 코드를 직접 제어할 수 있고, 사용자의 HttpRequest에 대한 응답 데이터를 포함하는 클래스다. HTTP 아키텍처 형태에 맞는 Response를 보내 준다. [사용법](https://www.baeldung.com/spring-response-entity)
+  - 결과값, 상태코드, 헤더값을 프론트에 넘겨줄 수 있고, 에러코드를 섬세하게 설정해서 보내줄 수 있다.
+  - Raw 타입으론 사용하지 말것!  [참고](https://100100e.tistory.com/481)
+    - Raw 타입 : 제네릭 타입에서 타입 매개변수를 전혀 사용하지 않을 때
+    - Unbounded wildcard 타입 : 제네릭을 사용하고 싶지만 실제 타입 매개변수가 무엇인지 신경쓰고 싶지 않을 때 `<?>`을 사용하면 된다.
+
+</div>
+</details>
