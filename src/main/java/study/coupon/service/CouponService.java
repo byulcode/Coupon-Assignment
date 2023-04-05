@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import study.coupon.domain.Coupon;
 import study.coupon.domain.dto.RequestDto;
 import study.coupon.domain.dto.ResponseDto;
-import study.coupon.domain.exception.InvalidCouponException;
+import study.coupon.domain.advice.exception.NotFoundIdException;
 import study.coupon.repository.CouponRepository;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class CouponService {
      */
     public ResponseDto getCoupon(Long id) {
         Coupon coupon = couponRepository.findById(id)
-                .orElseThrow(InvalidCouponException::new);
+                .orElseThrow(NotFoundIdException::new);
         return ResponseDto.from(coupon);
     }
 
@@ -54,7 +54,7 @@ public class CouponService {
     @Transactional
     public ResponseDto updateCoupon(Long id, RequestDto requestDto) {
         Coupon coupon = couponRepository
-                .findById(id).orElseThrow(InvalidCouponException::new);
+                .findById(id).orElseThrow(NotFoundIdException::new);
         coupon.update(requestDto.getCode(), requestDto.getUseDate(), requestDto.getEndDate(), requestDto.isUsageStatus());
         coupon.checkUsageStatus();
         return ResponseDto.from(coupon);
